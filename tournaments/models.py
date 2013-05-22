@@ -1,13 +1,21 @@
 from django.db import models
+from snippets.countries import CountryField
 
 # Create your models here.
 class Player(models.Model):
     name = models.CharField(max_length=200)
-    register_date = models.DateTimeField('registration date')
+    country = CountryField()
+    register_date = models.DateField('registration date', auto_now_add=True)
     initial_rating = models.IntegerField()
     rating = models.IntegerField()
     fide_id = models.BigIntegerField('FIDE ID')
     fide_title = models.CharField(max_length=10)
+    
+    def save(self, *args, **kwargs):
+        if self.id == None:
+            self.rating = self.initial_rating
+        super(Player, self).save(*args, **kwargs) # Call the "real" save() method.
+
 
 class Tournament(models.Model):
     name = models.CharField(max_length=200)
@@ -15,10 +23,12 @@ class Tournament(models.Model):
     end_date = models.DateTimeField()
     players = models.ManyToManyField(Player)
 
+
 class Round(models.Model):
     tournament = models.ForeignKey(Tournament)
     name = models.CharField(max_length=200)
     round_date = models.DateTimeField()
+
 
 class Game(models.Model):
     GAME_STATUSES = (
@@ -35,4 +45,3 @@ class Game(models.Model):
     status = models.CharField(max_length=10,
                               choices=GAME_STATUSES,
                               default='planned')
-    

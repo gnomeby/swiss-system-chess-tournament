@@ -8,7 +8,10 @@ The system is for helping judges to provide chess tournaments based on swiss sys
 * Django 1.5.1
 
 #### Features:
-
+* Setup players
 
 #### Problems:
 * How to store players for game? One record or two record?
+
+#### TODO:
+* Disable edit/delete if player have one finished game

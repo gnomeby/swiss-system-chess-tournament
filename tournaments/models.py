@@ -15,13 +15,21 @@ class Player(models.Model):
         if self.id == None:
             self.rating = self.initial_rating
         super(Player, self).save(*args, **kwargs) # Call the "real" save() method.
+        
+    def __str__(self):
+        return self.name
 
 
 class Tournament(models.Model):
     name = models.CharField(max_length=200)
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
+    country = CountryField()
+    city = models.CharField(max_length=200)
+    start_date = models.DateField()
+    end_date = models.DateField()
     players = models.ManyToManyField(Player)
+    
+    def __str__(self):
+        return self.name
 
 
 class Round(models.Model):

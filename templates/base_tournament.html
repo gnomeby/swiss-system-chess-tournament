@@ -1,0 +1,18 @@
+{% extends "admin/base.html" %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block title %}{{ title }} | {% trans 'Swiss system chess tournaments' %}{% endblock %}
+
+{% block breadcrumbs %}<div class="breadcrumbs">
+	<a href="{% url 'tournaments:index' %}">&lt;- {% trans 'Go to list' %}</a>
+	&nbsp;
+	<a href="{% url 'tournaments:detail' tournament.id %}">{% trans 'Details' %}</a>
+</div>{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+	<img src="{% static 'icons/rook.png' %}" style="width: 24px" alt="" />
+	{{ tournament.name }}, {{ tournament.city }}, {{ tournament.start_date }}</h1>
+{% endblock %}
+

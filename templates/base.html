@@ -1,0 +1,14 @@
+{% extends "admin/base.html" %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block title %}{{ title }} | {% trans 'Swiss system chess tournaments' %}{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+	<img src="{% static 'icons/rook.png' %}" style="width: 24px" alt="" />
+	{% trans 'Swiss system chess tournaments' %}</h1>
+{% endblock %}
+

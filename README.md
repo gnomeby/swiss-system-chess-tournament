@@ -9,9 +9,12 @@ The system is for helping judges to provide chess tournaments based on swiss sys
 
 #### Features:
 * Setup players
+* Setup tournaments
+* View tournament information
 
 #### Problems:
 * How to store players for game? One record or two record?
 
 #### TODO:
 * Disable edit/delete if player have one finished game
+* Disable delete if tournament have any round

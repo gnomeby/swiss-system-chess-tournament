@@ -1,5 +1,6 @@
 from django.views import generic
-from tournaments.models import Tournament
+from tournaments.models import Tournament, Round, Game
+from django.shortcuts import get_object_or_404, render
 
 class IndexView(generic.ListView):
     template_name = 'tournaments/index.html'
@@ -11,4 +12,15 @@ class IndexView(generic.ListView):
     
 class DetailView(generic.DetailView):
     model = Tournament
-    template_name = 'tournaments/detail.html'    
+    template_name = 'tournaments/detail.html'
+    
+    
+def rounds(request, pk):
+    tournament = get_object_or_404(Tournament, pk=pk)
+    rounds = Round.objects.filter(tournament=pk)
+    games = Game.objects.filter(round=rounds)
+    return render(request, 'tournaments/rounds.html', {
+                                                       'tournament': tournament,
+                                                       'rounds': rounds,
+                                                       'games': games,                                                       
+                                                       })

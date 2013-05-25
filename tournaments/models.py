@@ -27,7 +27,7 @@ class Player(models.Model):
             self.rating = self.initial_rating
         super(Player, self).save(*args, **kwargs) # Call the "real" save() method.
         
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
 
@@ -39,7 +39,7 @@ class Tournament(models.Model):
     end_date = models.DateField()
     players = models.ManyToManyField(Player)
     
-    def __str__(self):
+    def __unicode__(self):
         return self.name
     
     def players_count(self):
@@ -51,7 +51,7 @@ class Round(models.Model):
     name = models.CharField(max_length=200)
     round_date = models.DateField()
 
-    def __str__(self):
+    def __unicode__(self):
         return self.tournament.name + " - " + self.name
 
 class Game(models.Model):
@@ -70,5 +70,5 @@ class Game(models.Model):
                               choices=GAME_STATUSES,
                               default='planned')
     
-    def __str__(self):
+    def __unicode__(self):
         return str(self.player) + " " + str(self.player_score) + ":" + str(self.opponent_score) + " " + str(self.opponent)

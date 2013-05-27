@@ -61,11 +61,17 @@ class Game(models.Model):
         ('walkover', 'Walkover'),
     )
 
+    PLAYER_SCORES = (
+        (0, '0'),
+        (0.5, '0.5'),
+        (1.0, '1'),
+    )
+
     round = models.ForeignKey(Round)
     player = models.ForeignKey(Player, related_name="player_a")
-    player_score = models.DecimalField(max_digits=4, decimal_places=1, default=0)
+    player_score = models.DecimalField(max_digits=4, decimal_places=1, default=0, choices=PLAYER_SCORES)
+    opponent_score = models.DecimalField(max_digits=4, decimal_places=1, default=0, choices=PLAYER_SCORES)
     opponent = models.ForeignKey(Player, related_name="player_b")
-    opponent_score = models.DecimalField(max_digits=4, decimal_places=1, default=0)
     status = models.CharField(max_length=10,
                               choices=GAME_STATUSES,
                               default='planned')

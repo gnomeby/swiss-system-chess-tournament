@@ -12,7 +12,9 @@
 	{% for game in games %}
 		{% if game.round == round %}
 		  <tr>
-		    <td>{{ game }}</td>
+		    <td>{{ game.player }}</td>
+		    <td>{{ game.player_score }} : {{ game.opponent_score }}</td>
+		    <td>{{ game.opponent }}</td>
 		    <td>{{ game.status|capfirst }}</td>
 		  </tr>
 		{% endif %}

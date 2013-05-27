@@ -14,7 +14,7 @@ The system is for helping judges to provide chess tournaments based on swiss sys
 ** Direct link to creating rounds in list of tournaments
 ** Remove Tournament_Player caption
 * Setup rounds
-** InLine edit for Games
+** InLine edit for Games, valudation score and status, Sort Players alphabetically
 ** Autopairing by rating
 
 ##### User UI:
@@ -32,6 +32,10 @@ The system is for helping judges to provide chess tournaments based on swiss sys
 * Validation round date
 * Disable delete if round have one finished game
 * Optimize queries
+* Validation game players
+* Allow game without opponent
+* Show only Round table for tournament (not all rounds)
+* Support 0.5 for bye
 
 #### Most difficult places:
 * Autopairing by rating during round creating

@@ -3,6 +3,7 @@ from snippets.countries import CountryField
 
 # Support CountryField for South
 from south.modelsinspector import add_introspection_rules
+from django.db.transaction import managed
 add_introspection_rules([], ["^snippets\.countries\.CountryField"])
 
 # Create your models here.
@@ -75,10 +76,22 @@ class Game(models.Model):
     player = models.ForeignKey(Player, related_name="player_a")
     player_score = models.DecimalField(max_digits=4, decimal_places=1, default=0, choices=PLAYER_SCORES)
     opponent_score = models.DecimalField(max_digits=4, decimal_places=1, default=0, choices=PLAYER_SCORES)
-    opponent = models.ForeignKey(Player, related_name="player_b")
+    opponent = models.ForeignKey(Player, related_name="player_b", null=True)
     status = models.CharField(max_length=10,
                               choices=GAME_STATUSES,
                               default='planned')
     
     def __unicode__(self):
         return str(self.player) + " " + str(self.player_score) + ":" + str(self.opponent_score) + " " + str(self.opponent)
+
+
+class Tournament_Player_Score(models.Model):
+    tournament = models.ForeignKey(Tournament)
+    player = models.ForeignKey(Player)
+    score = models.DecimalField(max_digits=4, decimal_places=1)
+    
+    class Meta:
+        managed = False
+    
+    def __unicode__(self):
+        return str(self.player) + " " + str(self.score)

@@ -85,7 +85,9 @@ class Game(models.Model):
         return str(self.player) + " " + str(self.player_score) + ":" + str(self.opponent_score) + " " + str(self.opponent)
 
 
+# Bind model to SQL VIEW
 class Tournament_Player_Score(models.Model):
+    id = models.CharField(max_length=20, primary_key=True)
     tournament = models.ForeignKey(Tournament)
     player = models.ForeignKey(Player)
     score = models.DecimalField(max_digits=4, decimal_places=1)

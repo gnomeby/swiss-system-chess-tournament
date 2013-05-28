@@ -10,7 +10,7 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         query = """
             CREATE VIEW tournaments_tournament_player_score AS
-            SELECT tournaments_round.tournament_id, player_score.player_id, SUM(player_score.score) as score
+            SELECT CONCAT(tournaments_round.tournament_id, ':', player_score.player_id) as id, tournaments_round.tournament_id, player_score.player_id, SUM(player_score.score) as score
                 FROM tournaments_round
                     INNER JOIN tournaments_game_player_score as `player_score` 
                     ON (tournaments_round.id = player_score.round_id)

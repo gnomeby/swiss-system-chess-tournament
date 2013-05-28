@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django import forms
-from tournaments.models import Player, Tournament, Game, Round
+from tournaments.models import Player, Tournament, Game, Round,\
+    Tournament_Player_Score
 import math
 from django.utils.functional import curry
 
@@ -42,6 +43,15 @@ class GameInline(admin.TabularInline):
         
         initial = []
         
+        def pair_players_into_initial(players):
+            half = int(math.ceil(float(len(players)) / 2.0))
+            i = 0
+            for player in players[:half]:
+                opponent = players[half + i] if half + i < len(players) else None 
+                initial.append({'player': player, 'opponent': opponent})
+                i+=1
+            pass
+        
         if request.method == "GET" and obj is None and request.GET.has_key('tournament'):
             tournament = Tournament.objects.get(pk=request.GET['tournament'])
             players = tournament.players.order_by('-rating')
@@ -50,13 +60,31 @@ class GameInline(admin.TabularInline):
             formset.extra = game_count
             
             if tournament.round_set.count() == 0:
-                for player in players[:game_count]:
-                    initial.append({'player': player,
-                                    'player_score': 0,
-                                    'opponent': players[game_count + len(initial)],
-                                    'opponent_score': 0,
-                                    })
-                pass
+                pair_players_into_initial(players)
+            else:
+                scores = Tournament_Player_Score.objects
+                player_scores = scores.filter(tournament=1).order_by(
+                                                                      '-score',
+                                                                      '-player__rating',
+                                                                      )
+                current_group = []
+                prev_score = None
+                for score_row in player_scores:
+                    if len(current_group) < 2 or prev_score == score_row.score:
+                        current_group.append(score_row.player)
+                    else:
+                        # Pairing
+                        if len(current_group) % 2 == 0:
+                            pair_players_into_initial(current_group)
+                            current_group = []
+                        else:
+                            pair_players_into_initial(current_group[:-1])
+                            current_group = current_group[-1:]
+                            
+                        current_group.append(score_row.player)
+                    prev_score = score_row.score
+                if len(current_group) > 0:
+                    pair_players_into_initial(current_group)
         
         formset.__init__ = curry(formset.__init__, initial=initial)
         
@@ -68,13 +96,12 @@ class RoundFormAdmin(forms.ModelForm):
         
         tour = cleaned_data.get("tournament")
         if tour is not None:
-            if self.instance.pk and tour.round_set.count() > 0:
+            if self.instance.pk is None and tour.round_set.count() > 0:
                 prev_round = tour.round_set.order_by("-round_date")[0]
-                if prev_round.pk != self.instance.pk:
-                    if prev_round.game_set.count() == 0:
-                        raise forms.ValidationError("The previous round doesn't have any games.")
-                    elif prev_round.game_set.filter(status="planned").count() > 0:
-                        raise forms.ValidationError("The previous round has unfinished games.")
+                if prev_round.game_set.count() == 0:
+                    raise forms.ValidationError("The previous round doesn't have any games.")
+                elif prev_round.game_set.filter(status="planned").count() > 0:
+                    raise forms.ValidationError("The previous round has unfinished games.")
 
         return cleaned_data
             

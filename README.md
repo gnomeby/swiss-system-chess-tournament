@@ -37,6 +37,8 @@ The system is for helping judges to provide chess tournaments based on swiss sys
 * Allow game without opponent
 * Show only Round table for tournament (not all rounds)
 * Support 0.5 for bye
+* Support leaved players
+* Support colors, rating ordering
 
 #### Most difficult places:
 * Autopairing by rating during round creating

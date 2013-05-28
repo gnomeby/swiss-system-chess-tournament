@@ -18,6 +18,10 @@
     <th>{% trans 'End' %}</th>
     <td>{{ tournament.end_date }}</td>
   </tr>
+  <tr>
+    <th>{% trans 'Players' %}</th>
+    <td>{{ tournament.players.count }}</td>
+  </tr>
 </table>
 
 {% endblock %}

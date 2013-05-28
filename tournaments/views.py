@@ -14,11 +14,16 @@ class DetailView(generic.DetailView):
     model = Tournament
     template_name = 'tournaments/detail.html'
     
+
+class PlayersView(generic.DetailView):
+    model = Tournament
+    template_name = 'tournaments/players.html'
+
     
 def rounds(request, pk):
     tournament = get_object_or_404(Tournament, pk=pk)
     rounds = Round.objects.filter(tournament=pk)
-    games = Game.objects.filter(round=rounds)
+    games = Game.objects.filter(round__tournament=pk)
     return render(request, 'tournaments/rounds.html', {
                                                        'tournament': tournament,
                                                        'rounds': rounds,

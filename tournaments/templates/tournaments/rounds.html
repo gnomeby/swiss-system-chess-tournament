@@ -13,9 +13,12 @@
 		{% if game.round == round %}
 		  <tr>
 		    <td>{{ game.player }}</td>
-		    <td>{{ game.player_score }} : {{ game.opponent_score }}</td>
+		    {% if game.status == 'planned' %}
+		    	<td>{{ game.status|capfirst }}</td>
+		    {% else %}
+		    	<td>{{ game.player_score }} : {{ game.opponent_score }}</td>
+		    {% endif %}
 		    <td>{{ game.opponent }}</td>
-		    <td>{{ game.status|capfirst }}</td>
 		  </tr>
 		{% endif %}
 	{% endfor %}

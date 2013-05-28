@@ -7,6 +7,8 @@
 {% block breadcrumbs %}<div class="breadcrumbs">
 	<a href="{% url 'tournaments:detail' tournament.id %}">{% trans 'Info' %}</a>
 	&nbsp;
+	<a href="{% url 'tournaments:players' tournament.id %}">{% trans 'Players' %}</a>
+	&nbsp;
 	<a href="{% url 'tournaments:rounds' tournament.id %}">{% trans 'Rounds' %}</a>
 </div>{% endblock %}
 

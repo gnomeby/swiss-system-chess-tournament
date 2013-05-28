@@ -10,6 +10,8 @@
 	<a href="{% url 'tournaments:players' tournament.id %}">{% trans 'Players' %}</a>
 	&nbsp;
 	<a href="{% url 'tournaments:rounds' tournament.id %}">{% trans 'Rounds' %}</a>
+	&nbsp;
+	<a href="{% url 'tournaments:standings' tournament.id %}">{% trans 'Standings' %}</a>
 </div>{% endblock %}
 
 {% block branding %}

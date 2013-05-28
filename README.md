@@ -16,11 +16,13 @@ The system is for helping judges to provide chess tournaments based on swiss sys
 ** Remove Tournament_Player caption
 * Setup rounds
 ** InLine edit for Games, valudation score and status, Sort Players alphabetically
-** Autopairing by rating
+** Autopairing by rating, score
 
 ##### User UI:
 * View tournament information
 * View round information
+* View players information
+* View initial standing information
 
 #### Problems:
 * How to store players for game? One record or two record?

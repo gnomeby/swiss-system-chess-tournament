@@ -7,4 +7,5 @@ urlpatterns = patterns('',
     url(r'^(?P<pk>\d+)/$', views.DetailView.as_view(), name='detail'),
     url(r'^(?P<pk>\d+)/players/$', views.PlayersView.as_view(), name='players'),
     url(r'^(?P<pk>\d+)/rounds/$', views.rounds, name='rounds'),
+    url(r'^(?P<pk>\d+)/standings/$', views.standings, name='standings'),
 )

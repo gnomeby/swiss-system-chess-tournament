@@ -6,6 +6,7 @@ The system is for helping judges to provide chess tournaments based on swiss sys
 #### Requirements:
 * Python 2.7
 * Django 1.5.1
+* South 0.8
 
 #### Features:
 * Setup players
@@ -28,7 +29,7 @@ The system is for helping judges to provide chess tournaments based on swiss sys
 * Disable edit/delete if player have one finished game
 * Disable delete if tournament have any round
 * Disable edit players if tournament have any round
-* Validation tournament dates
+* Validation tournament dates, players
 * Validation round date
 * Disable delete if round have one finished game
 * Optimize queries

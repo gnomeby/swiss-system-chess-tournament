@@ -1,6 +1,10 @@
 from django.db import models
 from snippets.countries import CountryField
 
+# Support CountryField for South
+from south.modelsinspector import add_introspection_rules
+add_introspection_rules([], ["^snippets\.countries\.CountryField"])
+
 # Create your models here.
 class Player(models.Model):
     FIDE_TITLES = (

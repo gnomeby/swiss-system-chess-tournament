@@ -63,7 +63,7 @@ class GameInline(admin.TabularInline):
                 pair_players_into_initial(players)
             else:
                 scores = Tournament_Player_Score.objects
-                player_scores = scores.filter(tournament=1).order_by(
+                player_scores = scores.filter(tournament=tournament).order_by(
                                                                       '-score',
                                                                       '-player__rating',
                                                                       )

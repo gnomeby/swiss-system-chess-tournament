@@ -17,6 +17,7 @@ class Player(models.Model):
         ('WIM', 'Woman International Master'),
         ('WFM', 'Woman FIDE Master'),
         ('WCM', 'Woman Candidate Master'),
+        ('nt', 'no title'),
     )
         
     name = models.CharField(max_length=200)
@@ -25,7 +26,7 @@ class Player(models.Model):
     initial_rating = models.IntegerField()
     rating = models.IntegerField()
     fide_id = models.BigIntegerField('FIDE ID')
-    fide_title = models.CharField(max_length=10, choices=FIDE_TITLES)
+    fide_title = models.CharField(max_length=10, choices=FIDE_TITLES, default='nt')
     
     def save(self, *args, **kwargs):
         if self.id == None:
@@ -37,12 +38,18 @@ class Player(models.Model):
 
 
 class Tournament(models.Model):
+    BYE_SCORES = (
+        (0.5, '0.5'),
+        (1.0, '1.0'),
+    )
+        
     name = models.CharField(max_length=200)
     country = CountryField()
     city = models.CharField(max_length=200)
     start_date = models.DateField()
     end_date = models.DateField()
     players = models.ManyToManyField(Player)
+    bye_score = models.DecimalField(max_digits=2, decimal_places=1, default=1, choices=BYE_SCORES)
     
     def __unicode__(self):
         return self.name
@@ -71,12 +78,23 @@ class Game(models.Model):
         (0.5, '0.5'),
         (1.0, '1'),
     )
+    
+    PLAYER_COLOR = (
+        ('W', 'White'),
+        ('B', 'Black'),
+    )
 
     round = models.ForeignKey(Round)
     player = models.ForeignKey(Player, related_name="player_a")
+    player_color = models.CharField(max_length=1,
+                                      choices=PLAYER_COLOR,
+                                      default='W')
     player_score = models.DecimalField(max_digits=4, decimal_places=1, default=0, choices=PLAYER_SCORES)
     opponent_score = models.DecimalField(max_digits=4, decimal_places=1, default=0, choices=PLAYER_SCORES)
     opponent = models.ForeignKey(Player, related_name="player_b", null=True)
+    opponent_color = models.CharField(max_length=1,
+                                      choices=PLAYER_COLOR,
+                                      default='B')
     status = models.CharField(max_length=10,
                               choices=GAME_STATUSES,
                               default='planned')

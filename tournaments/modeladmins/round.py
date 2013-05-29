@@ -14,10 +14,36 @@ class GameInLineFormAdmin(forms.ModelForm):
     
     def clean(self):
         cleaned_data = super(GameInLineFormAdmin, self).clean()
+        
+        # Check playes
+        player = cleaned_data.get("player")
+        opponent = cleaned_data.get("opponent")
+        if player == opponent:
+            self._errors["opponent"] = self.error_class([u'Player cannot play with oneself'])
+            del cleaned_data["opponent"]
+        
+        # Check colors
+        player_color = cleaned_data.get("player_color")
+        opponent_color = cleaned_data.get("opponent_color")
+
+        if player_color != "W" and player_color != "B":
+            self._errors["player_color"] = self.error_class([u'Player has incorrect color'])
+            del cleaned_data["player_color"]
+            
+        if opponent_color != "W" and opponent_color != "B":
+            self._errors["opponent_color"] = self.error_class([u'Opponent has incorrect color'])
+            del cleaned_data["opponent_color"]
+            
+        if player_color == opponent_color:
+            self._errors["opponent_color"] = self.error_class([u'Opponent must not have the same color'])
+            del cleaned_data["opponent_color"]
+        
+        # Check score and status
+        tour = Tournament.objects.get(pk=self.data['tournament'])
         player_score = cleaned_data.get("player_score")
         opponent_score = cleaned_data.get("opponent_score")
         status = cleaned_data.get("status")
-        
+         
         total_score = float(player_score) + float(opponent_score)
         if status == 'planned' and total_score > 0:
             self._errors["status"] = self.error_class([u'Planned status is not allowed if game has score'])
@@ -27,9 +53,11 @@ class GameInLineFormAdmin(forms.ModelForm):
             self._errors["status"] = self.error_class([u'Planned status must be set if game has not score'])
             del cleaned_data["status"]
 
-        elif status != 'planned' and (total_score == 0.5 or total_score > 1):
-            self._errors["status"] = self.error_class([u'Incorrect score'])
-            del cleaned_data["status"]
+        elif status != 'planned' and ((tour.bye_score == 1.0 and total_score == 0.5) or total_score > 1):
+            self._errors["player_score"] = self.error_class([u'Incorrect total score'])
+            self._errors["opponent_score"] = self._errors["player_score"] 
+            del cleaned_data["player_score"]
+            del cleaned_data["opponent_score"]
             
         return cleaned_data
             

@@ -4,6 +4,7 @@ from tournaments.models import Player, Tournament, Game, Round,\
     Tournament_Player_Score
 import math
 from django.utils.functional import curry
+import re
 
 
 class GameInLineFormAdmin(forms.ModelForm):
@@ -14,13 +15,33 @@ class GameInLineFormAdmin(forms.ModelForm):
     
     def clean(self):
         cleaned_data = super(GameInLineFormAdmin, self).clean()
+        tour = Tournament.objects.get(pk=self.data['tournament'])
         
-        # Check playes
+        # Check players
         player = cleaned_data.get("player")
-        opponent = cleaned_data.get("opponent")
+        opponent = cleaned_data.get("opponent") if cleaned_data.has_key("opponent") else None
         if player == opponent:
             self._errors["opponent"] = self.error_class([u'Player cannot play with oneself'])
             del cleaned_data["opponent"]
+            
+        if tour.players.count() % 2 == 0 and opponent is None:
+            self._errors["player"] = self.error_class([u'You cannot have games without opponent in tournament with even players count'])
+            del cleaned_data["player"]
+
+        if opponent is not None and len(self.data['round_date']) > 0:
+            # See format in settings
+            m = re.match('(?P<day>\d+).(?P<month>\d+).(?P<year>\d+)', self.data['round_date'])
+            if m is not None:
+                iso_date = "{0:s}-{1:s}-{2:s}".format(m.group('year'), m.group('month'), m.group('day'))
+                games = Game.objects.filter(round__tournament=tour, 
+                                            round__round_date__lt=iso_date
+                                            )
+                for game in games:
+                    if (game.player == player and game.opponent == opponent) or \
+                        (game.opponent == player and game.player == opponent):
+                        self._errors["player"] = self.error_class([u'The same pair was in one of previous rounds'])
+                        del cleaned_data["player"]
+                        
         
         # Check colors
         player_color = cleaned_data.get("player_color")
@@ -39,7 +60,6 @@ class GameInLineFormAdmin(forms.ModelForm):
             del cleaned_data["opponent_color"]
         
         # Check score and status
-        tour = Tournament.objects.get(pk=self.data['tournament'])
         player_score = cleaned_data.get("player_score")
         opponent_score = cleaned_data.get("opponent_score")
         status = cleaned_data.get("status")

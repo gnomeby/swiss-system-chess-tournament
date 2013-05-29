@@ -91,10 +91,10 @@ class Game(models.Model):
                                       default='W')
     player_score = models.DecimalField(max_digits=4, decimal_places=1, default=0, choices=PLAYER_SCORES)
     opponent_score = models.DecimalField(max_digits=4, decimal_places=1, default=0, choices=PLAYER_SCORES)
-    opponent = models.ForeignKey(Player, related_name="player_b", null=True)
     opponent_color = models.CharField(max_length=1,
                                       choices=PLAYER_COLOR,
                                       default='B')
+    opponent = models.ForeignKey(Player, related_name="player_b", null=True)
     status = models.CharField(max_length=10,
                               choices=GAME_STATUSES,
                               default='planned')

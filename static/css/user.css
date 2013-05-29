@@ -7,6 +7,16 @@
 	font-weight: bold;
 }
 .opponent {
-	font-size: 0.7em;
+	font-size: 0.8em;
 	text-align: center;
+}
+
+.player-color-W {
+	background-color: white;
+	color: black;
+}
+
+.player-color-B {
+	background-color: black;
+	color: white;
 }

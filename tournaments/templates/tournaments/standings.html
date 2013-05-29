@@ -24,20 +24,22 @@
 		<td>{{ row.player.rating }}</td>
 		<td>{{ row.player.country }}</td>
 		{% for round in rounds %}
-			<td>
 			{% for game in games %}
 				{% if game.round == round and game.status != 'planned' %}
 				  {% if game.player == row.player %}
+				  <td class="player-color-{{ game.player_color }}">
 				    <div class="score">{{ game.player_score }}</div>
 				    <div class="opponent">{{ game.opponent }}</div>
+				  </td>
 				  {% endif %}
 				  {% if game.opponent == row.player %}
+				  <td class="player-color-{{ game.opponent_color }}">
 				    <div class="score">{{ game.opponent_score }}</div>
 				    <div class="opponent">{{ game.player }}</div>
+				  </td>
 				  {% endif %}
 				{% endif %}
 			{% endfor %}
-			</td>
 		{% endfor %}	  
 		<td class="score">{{ row.score }}</td>
 	</tr>

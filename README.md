@@ -10,21 +10,21 @@ The system is for helping judges to provide chess tournaments based on swiss sys
 
 #### Used rules:
 * [Swiss System Based on Rating (The Dutch System)](http://www.fide.com/fide/handbook.html?id=83&view=article)
-** Pairing ordering: Score->Rating->Title (GM-IM-WGM-FM-WIM-CM-WFM-WCM-no title)->Alphabetically (name first)
+* * Pairing ordering: Score->Rating->Title (GM-IM-WGM-FM-WIM-CM-WFM-WCM-no title)->Alphabetically (name first)
 * [FIDE Title Regulations effective from 1 July 2013](http://www.fide.com/component/handbook/?id=163&view=article)
 
 #### Features:
 * Setup players
 * Setup tournaments
-** Sort Players alphabetically in Inline model
-** Direct link to creating rounds in list of tournaments
-** Remove Tournament_Player caption
-** Defining bye points
+* * Sort Players alphabetically in Inline model
+* * Direct link to creating rounds in list of tournaments
+* * Remove Tournament_Player caption
+* * Defining bye points
 * Setup rounds
-** Autopairing by score, rating
-** InLine edit for Games
-*** Validation score, players, color and status 
-*** Sort Players alphabetically
+* * Autopairing by score, rating
+* * InLine edit for Games
+* * * Validation score, players, color and status 
+* * * Sort Players alphabetically
 
 ##### User UI:
 * View tournament information

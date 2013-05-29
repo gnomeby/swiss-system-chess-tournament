@@ -113,7 +113,9 @@ class GameInline(admin.TabularInline):
                 scores = Tournament_Player_Score.objects
                 player_scores = scores.filter(tournament=tournament).order_by(
                                                                       '-score',
-                                                                      '-player__rating',
+                                                                      '-rating',
+                                                                      '-title_number',
+                                                                      'name',
                                                                       )
                 current_group = []
                 prev_score = None

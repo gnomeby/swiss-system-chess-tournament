@@ -35,9 +35,11 @@ def standings(request, pk):
     tournament = get_object_or_404(Tournament, pk=pk)
     scores = Tournament_Player_Score.objects
     player_scores = scores.filter(tournament=tournament).order_by(
-                                                          '-score',
-                                                          '-player__rating',
-                                                          )    
+                                                                  '-score',
+                                                                  '-rating',
+                                                                  '-title_number',
+                                                                  'name',
+                                                                  )    
     rounds = Round.objects.filter(tournament=pk)
     games = Game.objects.filter(round__tournament=pk)
     return render(request, 'tournaments/standings.html', {

@@ -21,7 +21,7 @@ The system is for helping judges to provide chess tournaments based on swiss sys
 * * Remove Tournament_Player caption
 * * Defining bye points
 * Setup rounds
-* * Autopairing by score, rating
+* * Autopairing by score, rating, title and name
 * * InLine edit for Games
 * * * Validation score, players, color and status 
 * * * Sort Players alphabetically
@@ -45,8 +45,9 @@ The system is for helping judges to provide chess tournaments based on swiss sys
 * Optimize queries
 * Validation game players
 * Show only Round table for tournament (not all rounds)
-* Support colors, title ordering
+* Support colors
 * Link to player fide page
+* Correct ordering for 1 round, enum for titles
 
 #### Most difficult places:
 * Autopairing by rating during round creating

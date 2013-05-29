@@ -10,10 +10,26 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         query = """
             CREATE VIEW tournaments_tournament_player_score AS
-            SELECT CONCAT(tournaments_round.tournament_id, ':', player_score.player_id) as id, tournaments_round.tournament_id, player_score.player_id, SUM(player_score.score) as score
+            SELECT CONCAT(tournaments_round.tournament_id, ':', player_score.player_id) as id, 
+                tournaments_round.tournament_id, player_score.player_id, SUM(player_score.score) as score,
+                player.name, player.rating, 
+                case player.fide_title
+                    when "GM"  then 8
+                    when "IM"  then 7
+                    when "WGM" then 6
+                    when "FM"  then 5
+                    when "WIM" then 4
+                    when "CM"  then 3
+                    when "WFM" then 2
+                    when "WCM" then 1
+                    else 0 
+                    end as title_number
+                
                 FROM tournaments_round
                     INNER JOIN tournaments_game_player_score as `player_score` 
                     ON (tournaments_round.id = player_score.round_id)
+                    INNER JOIN tournaments_player as `player` 
+                    ON (player.id = player_score.player_id)
                 GROUP BY tournaments_round.tournament_id, player_score.player_id
             ;
         """

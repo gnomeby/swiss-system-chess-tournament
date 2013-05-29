@@ -8,19 +8,38 @@
 
 <table>
 	<tr>
-	  <th>{% trans 'Title' %}</th>
-	  <th>{% trans 'Name' %}</th>
-	  <th>{% trans 'Rating' %}</th>
-	  <th>{% trans 'Country' %}</th>
-	  <th>{% trans 'Score' %}</th>
+		<th>{% trans 'Title' %}</th>
+		<th>{% trans 'Name' %}</th>
+		<th>{% trans 'Rating' %}</th>
+		<th>{% trans 'Country' %}</th>
+		{% for round in rounds %}
+			<th>{{ round.name }}</th>
+		{% endfor %}	  
+		<th>{% trans 'Score' %}</th>
 	</tr>
 {% for row in player_scores %}
 	<tr>
-	  <td>{{ row.player.fide_title }}</td>
-	  <td>{{ row.player.name }}</td>
-	  <td>{{ row.player.rating }}</td>
-	  <td>{{ row.player.country }}</td>
-	  <td>{{ row.score }}</td>
+		<td>{{ row.player.fide_title }}</td>
+		<td class="player">{{ row.player.name }}</td>
+		<td>{{ row.player.rating }}</td>
+		<td>{{ row.player.country }}</td>
+		{% for round in rounds %}
+			<td>
+			{% for game in games %}
+				{% if game.round == round and game.status != 'planned' %}
+				  {% if game.player == row.player %}
+				    <div class="score">{{ game.player_score }}</div>
+				    <div class="opponent">{{ game.opponent }}</div>
+				  {% endif %}
+				  {% if game.opponent == row.player %}
+				    <div class="score">{{ game.opponent_score }}</div>
+				    <div class="opponent">{{ game.player }}</div>
+				  {% endif %}
+				{% endif %}
+			{% endfor %}
+			</td>
+		{% endfor %}	  
+		<td class="score">{{ row.score }}</td>
 	</tr>
 {% endfor %}
 </table>

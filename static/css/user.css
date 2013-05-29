@@ -1,0 +1,12 @@
+.score {
+	text-align: center;
+	font-size: 1.5em;
+	font-weight: bold;
+}
+.player {
+	font-weight: bold;
+}
+.opponent {
+	font-size: 0.7em;
+	text-align: center;
+}

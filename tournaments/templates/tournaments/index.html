@@ -8,7 +8,7 @@
 {% if tournaments_list %}
     <ul>
     {% for tournament in tournaments_list %}
-    	<li><a href="{% url 'tournaments:detail' tournament.id %}">{{ tournament.name }} ({{ tournament.city }}, {{ tournament.start_date }})</a></li>
+    	<li><a href="{% url 'tournaments:details' tournament.id %}">{{ tournament.name }} ({{ tournament.city }}, {{ tournament.start_date }})</a></li>
     {% endfor %}
     </ul>
 {% else %}

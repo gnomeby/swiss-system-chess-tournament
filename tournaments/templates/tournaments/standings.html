@@ -6,7 +6,8 @@
 {% block content %}
 <h1>{% trans 'Standings' %}</h1>
 
-<table>
+{% if rounds %}
+<table class="standings-table">
 	<tr>
 		<th>{% trans 'Title' %}</th>
 		<th>{% trans 'Name' %}</th>
@@ -19,7 +20,7 @@
 	</tr>
 {% for row in player_scores %}
 	<tr>
-		<td>{{ row.player.fide_title }}</td>
+		<td>{{ row.player.fide_title|slice:"2:" }}</td>
 		<td class="player">{{ row.player.name }}</td>
 		<td>{{ row.player.rating }}</td>
 		<td>{{ row.player.country }}</td>
@@ -45,5 +46,8 @@
 	</tr>
 {% endfor %}
 </table>
+{% else %}
+	<h2>{% trans 'No rounds have been setup.' %}</h2>
+{% endif %}
 
 {% endblock %}

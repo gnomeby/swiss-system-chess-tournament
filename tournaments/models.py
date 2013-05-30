@@ -110,7 +110,7 @@ class Tournament_Player_Score(models.Model):
     player = models.ForeignKey(Player)
     score = models.DecimalField(max_digits=4, decimal_places=1)
     rating = models.IntegerField()
-    title_number = models.IntegerField()
+    fide_title = models.CharField(max_length=10)
     name = models.CharField(max_length=200)
     
     class Meta:

@@ -102,7 +102,7 @@ class GameInline(admin.TabularInline):
         
         if request.method == "GET" and obj is None and request.GET.has_key('tournament'):
             tournament = Tournament.objects.get(pk=request.GET['tournament'])
-            players = tournament.players.order_by('-rating')
+            players = tournament.players.order_by('-rating', '-fide_title', 'name')
             game_count = int(math.ceil(float(players.count()) / 2.0))
             
             formset.extra = game_count
@@ -114,7 +114,7 @@ class GameInline(admin.TabularInline):
                 player_scores = scores.filter(tournament=tournament).order_by(
                                                                       '-score',
                                                                       '-rating',
-                                                                      '-title_number',
+                                                                      '-fide_title',
                                                                       'name',
                                                                       )
                 current_group = []

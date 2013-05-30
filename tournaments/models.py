@@ -9,15 +9,15 @@ add_introspection_rules([], ["^snippets\.countries\.CountryField"])
 # Create your models here.
 class Player(models.Model):
     FIDE_TITLES = (
-        ('GM', 'Grandmaster'),
-        ('IM', 'International Master'),
-        ('FM', 'FIDE Master'),
-        ('CM', 'Candidate Master'),
-        ('WGM', 'Woman Grandmaster'),
-        ('WIM', 'Woman International Master'),
-        ('WFM', 'Woman FIDE Master'),
-        ('WCM', 'Woman Candidate Master'),
-        ('nt', 'no title'),
+        ('8 GM', 'Grandmaster'),
+        ('7 IM', 'International Master'),
+        ('5 FM', 'FIDE Master'),
+        ('3 CM', 'Candidate Master'),
+        ('6 WGM', 'Woman Grandmaster'),
+        ('4 WIM', 'Woman International Master'),
+        ('2 WFM', 'Woman FIDE Master'),
+        ('1 WCM', 'Woman Candidate Master'),
+        ('0 nt', 'no title'),
     )
         
     name = models.CharField(max_length=200)
@@ -26,11 +26,11 @@ class Player(models.Model):
     initial_rating = models.IntegerField()
     rating = models.IntegerField()
     fide_id = models.BigIntegerField('FIDE ID')
-    fide_title = models.CharField(max_length=10, choices=FIDE_TITLES, default='nt')
+    fide_title = models.CharField(max_length=10, choices=FIDE_TITLES, default='0 nt')
     
     def save(self, *args, **kwargs):
         if self.id == None:
-            self.rating = self.initial_rating
+            self.initial_rating = self.rating
         super(Player, self).save(*args, **kwargs) # Call the "real" save() method.
         
     def __unicode__(self):

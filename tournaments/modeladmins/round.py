@@ -5,6 +5,7 @@ from tournaments.models import Player, Tournament, Game, Round,\
 import math
 from django.utils.functional import curry
 import re
+from tournaments.pairing import pair_ordered_players
 
 
 class GameInLineFormAdmin(forms.ModelForm):
@@ -102,12 +103,9 @@ class GameInline(admin.TabularInline):
         
         if request.method == "GET" and obj is None and request.GET.has_key('tournament'):
             tournament = Tournament.objects.get(pk=request.GET['tournament'])
-            players = tournament.players.order_by('-rating', '-fide_title', 'name')
-            game_count = int(math.ceil(float(players.count()) / 2.0))
-            
-            formset.extra = game_count
             
             if tournament.round_set.count() == 0:
+                players = tournament.players.order_by('-rating', '-fide_title', 'name')
                 pair_players_into_initial(players)
             else:
                 scores = Tournament_Player_Score.objects
@@ -117,24 +115,13 @@ class GameInline(admin.TabularInline):
                                                                       '-fide_title',
                                                                       'name',
                                                                       )
-                current_group = []
-                prev_score = None
-                for score_row in player_scores:
-                    if len(current_group) < 2 or prev_score == score_row.score:
-                        current_group.append(score_row.player)
-                    else:
-                        # Pairing
-                        if len(current_group) % 2 == 0:
-                            pair_players_into_initial(current_group)
-                            current_group = []
-                        else:
-                            pair_players_into_initial(current_group[:-1])
-                            current_group = current_group[-1:]
-                            
-                        current_group.append(score_row.player)
-                    prev_score = score_row.score
-                if len(current_group) > 0:
-                    pair_players_into_initial(current_group)
+                
+                ordered_player_tuples = [(score_row.player, score_row.score) for score_row in player_scores]
+                games = Game.objects.filter(round__tournament=tournament)
+                players = pair_ordered_players(ordered_player_tuples, games)
+
+            pair_players_into_initial(players)
+            formset.extra = len(initial)
         
         formset.__init__ = curry(formset.__init__, initial=initial)
         

@@ -2,6 +2,10 @@
 {% load staticfiles %}
 {% load i18n %}
 
+{% block extrahead %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/user.css' %}" />
+{% endblock %}
+
 {% block title %}{{ title }} | {% trans 'Swiss system chess tournaments' %}{% endblock %}
 
 {% block breadcrumbs %}{% endblock %}

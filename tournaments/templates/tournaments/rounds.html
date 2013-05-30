@@ -1,30 +1,63 @@
 {% extends "base_tournament.html" %}
 {% load i18n %}
 
-{% block title %}{{ tournament.name }}{% endblock %}
+{% block title %}{% trans 'Rounds' %} - {{ tournament.name }}{% endblock %}
 
 {% block content %}
+<h1>{% trans 'Rounds' %}</h1>
 
 {% if rounds %}
 	{% for round in rounds %}
 	<h2>{{ round.name }}, {{ round.round_date }}</h2>
-	<table>
+	<table class="games-list">
+		<tr>
+			<th>{% trans 'Rating' %}</th>
+			<th>{% trans 'Title' %}</th>
+			<th>{% trans 'Name' %}</th>
+			<th>{% trans 'Score' %}</th>
+			<th>{% trans 'Name' %}</th>
+			<th>{% trans 'Title' %}</th>
+			<th>{% trans 'Rating' %}</th>
+			<th>{% trans 'Status' %}</th>
+		</tr>
 	{% for game in games %}
 		{% if game.round == round %}
 		  <tr>
-		    <td>{{ game.player }}</td>
-		    {% if game.status == 'planned' %}
-		    	<td>{{ game.status|capfirst }}</td>
+		  	{% if game.player_color == 'W' %}
+		  		<td>{{ game.player.rating }}</td>
+			    <td>{{ game.player.fide_title|slice:"2:" }}</td>
+			    <td class="name">{{ game.player }}</td>
+			    {% if game.status == 'planned' %}
+			    	<td class="score">-</td>
+			    {% else %}
+			    	<td class="score">{{ game.player_score }} : {{ game.opponent_score }}</td>
+			    {% endif %}
+			    <td class="name">{{ game.opponent }}</td>
+			    <td>{{ game.opponent.fide_title|slice:"2:" }}</td>
+			    <td>{{ game.opponent.rating }}</td>
+			    <td>{{ game.status|capfirst }}</td>
 		    {% else %}
-		    	<td>{{ game.player_score }} : {{ game.opponent_score }}</td>
+			    <td>{{ game.opponent.rating }}</td>
+			    <td>{{ game.opponent.fide_title|slice:"2:" }}</td>
+			    <td class="name">{{ game.opponent }}</td>
+			    {% if game.status == 'planned' %}
+			    	<td class="score">-</td>
+			    {% else %}
+			    	<td class="score">{{ game.opponent_score }} : {{ game.player_score }}</td>
+			    {% endif %}
+			    <td class="name">{{ game.player }}</td>
+			    <td>{{ game.player.fide_title|slice:"2:" }}</td>
+			    <td>{{ game.player.rating }}</td>
+			    <td>{{ game.status|capfirst }}</td>
 		    {% endif %}
-		    <td>{{ game.opponent }}</td>
 		  </tr>
 		{% endif %}
 	{% endfor %}
 	</table>
 	
 	{% endfor %}
+{% else %}
+	<h2>{% trans 'No rounds have been setup.' %}</h2>
 {% endif %}
 
 {% endblock %}

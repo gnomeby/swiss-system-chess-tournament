@@ -10,20 +10,19 @@ class IndexView(generic.ListView):
         return Tournament.objects.order_by('-start_date')
     
     
-class DetailView(generic.DetailView):
-    model = Tournament
-    template_name = 'tournaments/detail.html'
+def details(request, pk):
+    tournament = get_object_or_404(Tournament, pk=pk)
+    players = tournament.players.order_by('name')
+    return render(request, 'tournaments/details.html', {
+                                                       'tournament': tournament,
+                                                       'players': players,                                                       
+                                                       })
     
 
-class PlayersView(generic.DetailView):
-    model = Tournament
-    template_name = 'tournaments/players.html'
-
-    
 def rounds(request, pk):
     tournament = get_object_or_404(Tournament, pk=pk)
     rounds = Round.objects.filter(tournament=pk)
-    games = Game.objects.filter(round__tournament=pk)
+    games = Game.objects.filter(round__tournament=pk).order_by('round')
     return render(request, 'tournaments/rounds.html', {
                                                        'tournament': tournament,
                                                        'rounds': rounds,

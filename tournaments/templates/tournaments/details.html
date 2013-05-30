@@ -1,0 +1,48 @@
+{% extends "base_tournament.html" %}
+{% load i18n %}
+
+{% block title %}{{ tournament.name }}{% endblock %}
+
+{% block content %}
+<h1>{% trans 'Details' %}</h1>
+<table class="tournament-info">
+  <tr>
+    <th>{% trans 'Place' %}</th>
+    <td>{{ tournament.city }}, {{ tournament.get_country_display }}</td>
+  </tr>
+  <tr>
+    <th>{% trans 'Start' %}</th>
+    <td>{{ tournament.start_date }}</td>
+  </tr>
+  <tr>
+    <th>{% trans 'End' %}</th>
+    <td>{{ tournament.end_date }}</td>
+  </tr>
+  <tr>
+    <th>{% trans 'Players' %}</th>
+    <td>{{ tournament.players.count }}</td>
+  </tr>
+</table>
+
+<h1>{% trans 'Players' %}</h1>
+<table class="players-list">
+	<tr>
+	  <th>{% trans 'FIDE ID' %}</th>
+	  <th>{% trans 'Title' %}</th>
+	  <th>{% trans 'Name' %}</th>
+	  <th>{% trans 'Country' %}</th>
+	  <th>{% trans 'Rating' %}</th>
+	</tr>
+	{% for player in players %}
+	<tr>
+	  <td class="fide_id">{{ player.fide_id }}</td>
+	  <td class="fide_title">{{ player.get_fide_title_display }}</td>
+	  <td class="name">{{ player.name }}</td>
+	  <td class="country">{{ player.get_country_display }}</td>
+	  <td class="rating">{{ player.rating }}</td>
+	</tr>
+	{% endfor %}
+</table>
+
+{% endblock %}
+

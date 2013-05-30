@@ -26,12 +26,15 @@ class TournamentAdmin(admin.ModelAdmin):
         css = { "all" : ("css/additional_admin.css",) }    
     
     def add_round_link(self, tour):
-        return '{0:d} (<a href="../round/add' \
-            '?tournament={1:d}&name={2:s}">add new</a>)'.format(
-                                                                tour.round_set.count(), 
-                                                                tour.id,
-                                                                "Round " + str(tour.round_set.count() + 1)
-                                                                )
+        return '{0:d}' \
+               ' (<a href="../round/add?tournament={1:d}&name={2:s}">add new</a>,' \
+               ' <a href="../round/?q={3:s}">list</a>' \
+               ')'.format(
+                            tour.round_set.count(), 
+                            tour.id,
+                            "Round " + str(tour.round_set.count() + 1),
+                            tour.name
+                            )
     add_round_link.short_description = 'Rounds'
     add_round_link.allow_tags = True    
 

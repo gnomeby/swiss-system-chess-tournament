@@ -158,10 +158,10 @@ class RoundFormAdmin(forms.ModelForm):
     pass
     
 class RoundAdmin(admin.ModelAdmin):
-    list_display = ('name', 'tournament', 'round_date')
+    list_display = ('name', 'add_tournament_link', 'round_date')
     list_filter = ['round_date']
     date_hierarchy = 'round_date'
-    search_fields = ['name']
+    search_fields = ['tournament__name', 'name']
     ordering = ['-round_date']
     inlines = [GameInline]
     form = RoundFormAdmin
@@ -173,6 +173,12 @@ class RoundAdmin(admin.ModelAdmin):
         """
         Return empty perms dict thus hiding the model from admin index.
         """
-        return {}    
+        return {}
+    
+            
+    def add_tournament_link(self, round):
+        return '<a href="../tournament/?q={0:s}">{0:s}</a>'.format(round.tournament.name)
+    add_tournament_link.short_description = 'Tournament'
+    add_tournament_link.allow_tags = True    
     
 admin.site.register(Round, RoundAdmin)

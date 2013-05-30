@@ -29,7 +29,6 @@ The system is for helping judges to provide chess tournaments based on swiss sys
 ##### User UI:
 * View tournament information
 * View round information
-* View players information
 * View initial standing information
 
 #### Problems:
@@ -48,6 +47,17 @@ The system is for helping judges to provide chess tournaments based on swiss sys
 * Support colors
 * Link to player fide page
 * Correct ordering for 1 round, enum for titles
+* Show only tournament players in game selects
+* Filter by AJAX right side
+* allow to not have apponent
+* Disable add round if players less than 2
+* Order games by white player names
 
 #### Most difficult places:
 * Autopairing by rating during round creating
+
+#### FAQ
+##### Is it suitable for non Swiss system
+Yes. In general this system only helps pairing during round creation. 
+You can change pairs manually to follow any kind of tournament. 
+In this case the system will help you to show results.

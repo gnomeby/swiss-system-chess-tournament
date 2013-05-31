@@ -22,6 +22,20 @@ class Migration(SchemaMigration):
         db.execute("UPDATE tournaments_player SET fide_title = '0 nt' WHERE fide_title = 'nt'")
 
         query = """
+            DROP VIEW tournaments_game_player_score;
+        """
+        db.execute(query)
+        
+        query = """
+            CREATE VIEW tournaments_game_player_score AS
+                SELECT id as game_id, round_id, player_id, player_score as score, player_color as color FROM tournaments_game
+                UNION ALL
+                SELECT id as game_id, round_id, opponent_id as player_id, opponent_score as score, opponent_color as color FROM tournaments_game WHERE opponent_id IS NOT NULL
+            ;
+        """
+        db.execute(query)
+
+        query = """
             DROP VIEW tournaments_tournament_player_score;
         """
         db.execute(query)
@@ -57,6 +71,21 @@ class Migration(SchemaMigration):
         db.execute("UPDATE tournaments_player SET fide_title = 'WFM' WHERE fide_title = '2 WFM'")
         db.execute("UPDATE tournaments_player SET fide_title = 'WCM' WHERE fide_title = '1 WCM'")
         db.execute("UPDATE tournaments_player SET fide_title = 'nt' WHERE fide_title = '0 nt'")
+        
+        query = """
+            DROP VIEW tournaments_game_player_score;
+        """
+        db.execute(query)
+        
+        query = """
+            CREATE VIEW tournaments_game_player_score AS
+                SELECT id as game_id, round_id, player_id, player_score as score FROM tournaments_game
+                UNION ALL
+                SELECT id as game_id, round_id, opponent_id as player_id, opponent_score as score FROM tournaments_game
+                    WHERE opponent_id IS NOT NULL
+            ;
+        """
+        db.execute(query)
         
         query = """
             DROP VIEW tournaments_tournament_player_score;

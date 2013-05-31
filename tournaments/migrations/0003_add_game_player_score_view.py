@@ -10,9 +10,11 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         query = """
             CREATE VIEW tournaments_game_player_score AS
-                SELECT id as game_id, round_id, player_id, player_score as score, player_color as color FROM tournaments_game
+                SELECT id as game_id, round_id, player_id, player_score as score FROM tournaments_game
                 UNION ALL
-                SELECT id as game_id, round_id, opponent_id as player_id, opponent_score as score, opponent_color as color FROM tournaments_game WHERE opponent_id IS NOT NULL
+                SELECT id as game_id, round_id, opponent_id as player_id, opponent_score as score
+                    FROM tournaments_game
+                    WHERE opponent_id IS NOT NULL
             ;
         """
         db.execute(query)

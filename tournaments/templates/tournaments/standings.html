@@ -9,6 +9,7 @@
 {% if rounds %}
 <table class="standings-table">
 	<tr>
+		<th>{% trans 'Rank' %}</th>
 		<th>{% trans 'Title' %}</th>
 		<th>{% trans 'Name' %}</th>
 		<th>{% trans 'Rating' %}</th>
@@ -20,22 +21,27 @@
 	</tr>
 {% for row in player_scores %}
 	<tr>
+		<td>{{ forloop.counter }}</td>
 		<td>{{ row.player.fide_title|slice:"2:" }}</td>
 		<td class="player">{{ row.player.name }}</td>
 		<td>{{ row.player.rating }}</td>
 		<td>{{ row.player.country }}</td>
 		{% for round in rounds %}
 			{% for game in games %}
-				{% if game.round == round and game.status != 'planned' %}
+				{% if game.round == round %}
 				  {% if game.player == row.player %}
 				  <td class="player-color-{{ game.player_color }}">
+				  	{% if game.status != 'planned' %}
 				    <div class="score">{{ game.player_score }}</div>
+				    {% endif %}
 				    <div class="opponent">{{ game.opponent }}</div>
 				  </td>
 				  {% endif %}
 				  {% if game.opponent == row.player %}
 				  <td class="player-color-{{ game.opponent_color }}">
+				  	{% if game.status != 'planned' %}
 				    <div class="score">{{ game.opponent_score }}</div>
+				    {% endif %}
 				    <div class="opponent">{{ game.player }}</div>
 				  </td>
 				  {% endif %}

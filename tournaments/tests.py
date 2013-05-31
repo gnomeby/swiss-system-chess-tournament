@@ -26,6 +26,7 @@ class PairingTest(TestCase):
                         {'name': 'Tatiana Kosintseva', 'rating': 2532, 'title': 8},
                         {'name': 'Viktorija Cmilyte', 'rating': 2508, 'title': 8},
                        ]
+        self.games = []
 
     def find_player(self, name, list=None):
         if list is None:
@@ -79,4 +80,63 @@ class PairingTest(TestCase):
 
         self.assertIn(self.find_player('Nadezhda Kosintseva'), pairs[5])
         self.assertIn(self.find_player('Betul Cemre Yildiz'), pairs[5])
+
         
+    def test_pairing_for_second_round(self):
+        """
+        Tests ordering by score, rating, title, name and pairing including transposition.
+        """
+        
+        self.games.append({'player': 'Hou Yifan', 'opponent': 'Antoaneta Stefanova',
+                           'player_score': 1.0, 'opponent_score': 0.0,
+                           'player_color': 'W', 'opponent_color': 'B',
+                           'round': 1, 'is_walkover': False})
+
+        self.games.append({'player': 'Anna Muzychuk', 'opponent': 'Viktorija Cmilyte',
+                           'player_score': 0.5, 'opponent_score': 0.5,
+                           'player_color': 'B', 'opponent_color': 'W',
+                           'round': 1, 'is_walkover': False})
+
+        self.games.append({'player': 'Humpy Koneru', 'opponent': 'Elina Danielian',
+                           'player_score': 0.5, 'opponent_score': 0.5,
+                           'player_color': 'B', 'opponent_color': 'W',
+                           'round': 1, 'is_walkover': False})
+
+        self.games.append({'player': 'Kateryna Lahno', 'opponent': 'Alisa Galliamova',
+                           'player_score': 1.0, 'opponent_score': 0.0,
+                           'player_color': 'B', 'opponent_color': 'W',
+                           'round': 1, 'is_walkover': False})
+
+        self.games.append({'player': 'Tatiana Kosintseva', 'opponent': 'Alexandra Kosteniuk',
+                           'player_score': 0.5, 'opponent_score': 0.5,
+                           'player_color': 'W', 'opponent_color': 'B',
+                           'round': 1, 'is_walkover': False})
+
+        self.games.append({'player': 'Nadezhda Kosintseva', 'opponent': 'Betul Cemre Yildiz',
+                           'player_score': 0.5, 'opponent_score': 0.5,
+                           'player_color': 'B', 'opponent_color': 'W',
+                           'round': 1, 'is_walkover': False})
+
+        pairing = Pairing(self.players, self.games, 2)
+        pairs = pairing.make_it()
+        
+        # Check pairs and color
+        self.assertEqual(self.find_player('Kateryna Lahno'), pairs[0][0])
+        self.assertEqual(self.find_player('Hou Yifan'), pairs[0][1])
+
+        self.assertEqual(self.find_player('Anna Muzychuk'), pairs[1][0])
+        self.assertEqual(self.find_player('Elina Danielian'), pairs[1][1])
+
+        self.assertEqual(self.find_player('Humpy Koneru'), pairs[2][0])
+        self.assertEqual(self.find_player('Viktorija Cmilyte'), pairs[2][1])
+
+        self.assertEqual(self.find_player('Tatiana Kosintseva'), pairs[3][0])
+        self.assertEqual(self.find_player('Betul Cemre Yildiz'), pairs[3][1])
+
+        self.assertEqual(self.find_player('Nadezhda Kosintseva'), pairs[4][0])
+        self.assertEqual(self.find_player('Alexandra Kosteniuk'), pairs[4][1])
+
+        self.assertEqual(self.find_player('Antoaneta Stefanova'), pairs[5][0])
+        self.assertEqual(self.find_player('Alisa Galliamova'), pairs[5][1])
+
+        pass

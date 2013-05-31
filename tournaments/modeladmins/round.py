@@ -5,7 +5,7 @@ from tournaments.models import Player, Tournament, Game, Round,\
 import math
 from django.utils.functional import curry
 import re
-from tournaments.pairing import pair_ordered_players
+from tournaments.pairing import Pairing
 
 
 class GameInLineFormAdmin(forms.ModelForm):
@@ -108,19 +108,35 @@ class GameInline(admin.TabularInline):
                 players = tournament.players.order_by('-rating', '-fide_title', 'name')
                 pair_players_into_initial(players)
             else:
-                scores = Tournament_Player_Score.objects
-                player_scores = scores.filter(tournament=tournament).order_by(
-                                                                      '-score',
-                                                                      '-rating',
-                                                                      '-fide_title',
-                                                                      'name',
-                                                                      )
+                players = tournament.players.order_by('-rating', '-fide_title', 'name')
+                players_list = [{ 
+                                  'name': player.name, 
+                                  'rating': player.rating,  
+                                  'title': int(player.fide_title[:1]),
+                                  'player': player
+                                  }
+                                for player in players
+                                ]
                 
-                ordered_player_tuples = [(score_row.player, score_row.score) for score_row in player_scores]
-                games = Game.objects.filter(round__tournament=tournament)
-                players = pair_ordered_players(ordered_player_tuples, games)
+                games = Game.objects.filter(round__tournament=tournament).order_by('round__round_date')
+                games_list = [{'round': game.round.id, 
+                              'player': game.player.name, 
+                              'opponent': game.opponent.name if game.opponent else None,
+                              'player_score': game.player_score,  
+                              'opponent_score': game.opponent_score, 
+                              'player_color': game.player_color,  
+                              'opponent_color': game.opponent_color, 
+                              'is_walkover': game.status == 'walkover'}
+                              for game in games
+                              ]
+                pairing = Pairing(players_list, games_list, tournament.round_set.count() + 1)
+                print games_list
+                pairs = pairing.make_it()
+                print pairs
+                for pair in pairs:
+                    initial.append({'player': pair[0]['player'], 'opponent': pair[1]['player']})
 
-            pair_players_into_initial(players)
+            
             formset.extra = len(initial)
         
         formset.__init__ = curry(formset.__init__, initial=initial)

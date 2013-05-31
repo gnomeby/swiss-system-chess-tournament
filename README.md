@@ -35,29 +35,30 @@ The system is for helping judges to provide chess tournaments based on swiss sys
 * How to store players for game? One record or two record?
 
 #### TODO:
-* Disable edit/delete if player have one finished game
-* Disable delete if tournament have any round
-* Disable edit players if tournament have any round
+* Use Buchholz system
 * Validation tournament dates, players
 * Validation round date
-* Disable delete if round have one finished game
 * Optimize queries
 * Validation game players
-* Show only Round table for tournament (not all rounds)
-* Support colors
-* Link to player fide page
-* Correct ordering for 1 round, enum for titles
 * Show only tournament players in game selects
 * Filter by AJAX right side
 * allow to not have apponent
 * Disable add round if players less than 2
-* Order games by white player names
+##### Admin:
+* Restore filter for tables after leaving add/edit actions
+* Player: disable delete players if ones are assigned to tournament
+* Tour: disable edit/delete players if tournament has any round
+* Tour: disable delete tournament if one has any round
+* Round: disable delete if round have one finished game
+##### User UI:
+* Rounds: Order games by white player names
+* Minor: Link to player fide page
 
 #### Most difficult places:
 * Autopairing by rating during round creating
 
 #### FAQ
-##### Is it suitable for non Swiss system
+##### Is it suitable for non Swiss system?
 Yes. In general this system only helps pairing during round creation. 
-You can change pairs manually to follow any kind of tournament. 
-In this case the system will help you to show results.
+You can change pairs manually to follow any kind of tournament except tournament that allows to have move
+than one game for the same players. 

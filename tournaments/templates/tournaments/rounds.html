@@ -6,9 +6,9 @@
 {% block content %}
 <h1>{% trans 'Rounds' %}</h1>
 
-{% if rounds %}
-	{% for round in rounds %}
-	<h2>{{ round.name }}, {{ round.round_date }}</h2>
+{% if rounds_info %}
+	{% for round_info in rounds_info %}
+	<h2>{{ round_info.round.name }}, {{ round_info.round.round_date }}</h2>
 	<table class="games-list">
 		<tr>
 			<th>{% trans 'Rating' %}</th>
@@ -20,38 +20,36 @@
 			<th>{% trans 'Rating' %}</th>
 			<th>{% trans 'Status' %}</th>
 		</tr>
-	{% for game in games %}
-		{% if game.round == round %}
+	{% for game in round_info.games %}
 		  <tr>
-		  	{% if game.player_color == 'W' %}
+		  	{% if game.game.player_color == 'W' %}
 		  		<td>{{ game.player.rating }}</td>
 			    <td>{{ game.player.fide_title|slice:"2:" }}</td>
 			    <td class="name">{{ game.player }}</td>
-			    {% if game.status == 'planned' %}
+			    {% if game.game.status == 'planned' %}
 			    	<td class="score">-</td>
 			    {% else %}
-			    	<td class="score">{{ game.player_score }} : {{ game.opponent_score }}</td>
+			    	<td class="score">{{ game.game.player_score }} : {{ game.game.opponent_score }}</td>
 			    {% endif %}
 			    <td class="name">{{ game.opponent }}</td>
 			    <td>{{ game.opponent.fide_title|slice:"2:" }}</td>
 			    <td>{{ game.opponent.rating }}</td>
-			    <td>{{ game.status|capfirst }}</td>
+			    <td>{{ game.game.status|capfirst }}</td>
 		    {% else %}
 			    <td>{{ game.opponent.rating }}</td>
 			    <td>{{ game.opponent.fide_title|slice:"2:" }}</td>
 			    <td class="name">{{ game.opponent }}</td>
-			    {% if game.status == 'planned' %}
+			    {% if game.game.status == 'planned' %}
 			    	<td class="score">-</td>
 			    {% else %}
-			    	<td class="score">{{ game.opponent_score }} : {{ game.player_score }}</td>
+			    	<td class="score">{{ game.game.opponent_score }} : {{ game.game.player_score }}</td>
 			    {% endif %}
 			    <td class="name">{{ game.player }}</td>
 			    <td>{{ game.player.fide_title|slice:"2:" }}</td>
 			    <td>{{ game.player.rating }}</td>
-			    <td>{{ game.status|capfirst }}</td>
+			    <td>{{ game.game.status|capfirst }}</td>
 		    {% endif %}
 		  </tr>
-		{% endif %}
 	{% endfor %}
 	</table>
 	

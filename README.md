@@ -49,20 +49,20 @@ Admin user: admin/admin
 * Optimize queries
 * Final results
 
-* Validation tournament dates
-* Validation round date
-
-* Validation game players (only assigned to tournament), Show only tournament players in game selects
-* Filter Opponents by AJAX right side
-* Game: Allow to not have apponent
-* Round: Disable add round if players less than 2
 ##### Admin:
 * Restore filter for tables after leaving add/edit actions
 * Player: disable delete players if ones are assigned to tournament
 * Tour: disable edit/delete players if tournament has any round
 * Tour: disable delete tournament if one has any round
+* Tour: Validation tournament dates
+* Round: Validation round date
 * Round: disable delete if round have one finished game
+* Round: Disable add round if players less than 2
+* Game: Filter Opponents by AJAX right side
+* Game: Allow to not have apponent
+* Game: Validation game players (only assigned to tournament), Show only tournament players in game selects
 ##### User UI:
+* Cache pages
 * Rounds: Order games by white player names
 * Minor: Link to player fide page
 

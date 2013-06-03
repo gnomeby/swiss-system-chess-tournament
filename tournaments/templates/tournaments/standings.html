@@ -19,34 +19,30 @@
 		{% endfor %}	  
 		<th>{% trans 'Score' %}</th>
 	</tr>
-{% for row in player_scores %}
+{% for row in players_info %}
 	<tr>
 		<td>{{ forloop.counter }}</td>
 		<td>{{ row.player.fide_title|slice:"2:" }}</td>
 		<td class="player">{{ row.player.name }}</td>
 		<td>{{ row.player.rating }}</td>
 		<td>{{ row.player.country }}</td>
-		{% for round in rounds %}
-			{% for game in games %}
-				{% if game.round == round %}
-				  {% if game.player == row.player %}
-				  <td class="player-color-{{ game.player_color }}">
-				  	{% if game.status != 'planned' %}
-				    <div class="score">{{ game.player_score }}</div>
-				    {% endif %}
-				    <div class="opponent">{{ game.opponent }}</div>
-				  </td>
-				  {% endif %}
-				  {% if game.opponent == row.player %}
-				  <td class="player-color-{{ game.opponent_color }}">
-				  	{% if game.status != 'planned' %}
-				    <div class="score">{{ game.opponent_score }}</div>
-				    {% endif %}
-				    <div class="opponent">{{ game.player }}</div>
-				  </td>
-				  {% endif %}
-				{% endif %}
-			{% endfor %}
+		{% for game in row.games %}
+			{% if game.game.player_id == row.player.id %}
+			<td class="player-color-{{ game.game.player_color }}">
+				{% if game.game.status != 'planned' %}
+			  		<div class="score">{{ game.game.player_score }}</div>
+			  	{% endif %}
+			  <div class="opponent">{{ game.opponent }}</div>
+			</td>
+			{% endif %}
+			{% if game.game.opponent_id == row.player.id %}
+			<td class="player-color-{{ game.game.opponent_color }}">
+				{% if game.game.status != 'planned' %}
+			  		<div class="score">{{ game.game.opponent_score }}</div>
+			  	{% endif %}
+			  <div class="opponent">{{ game.player }}</div>
+			</td>
+			{% endif %}
 		{% endfor %}	  
 		<td class="score">{{ row.score }}</td>
 	</tr>

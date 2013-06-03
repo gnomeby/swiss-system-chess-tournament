@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django import forms
-from tournaments.models import Player, Tournament, Game, Round,\
-    Tournament_Player_Score
+from tournaments.models import Player, Tournament, Game, Round
 import math
 from django.utils.functional import curry
 import re

@@ -63,6 +63,8 @@ class Pairing:
             self.pair_first_round()
         elif self.next_round % 2 == 0:
             self.pair_even_round()
+        elif self.next_round % 2 == 1:
+            self.pair_odd_round()
             
         return self.pairs
     
@@ -82,29 +84,58 @@ class Pairing:
             self.pairs.append([sorted_players[S1count*2+1], None])
         pass
     
+    def pair_odd_round(self):
+        self.pair_even_round()
+        
     def pair_even_round(self):
         sorted_brackets_keys = sorted(self.brackets, reverse=True)
-        #highest_group = sorted_brackets_keys[:1]
+        highest_group = sorted_brackets_keys[0]
         #lowest_group = sorted_brackets_keys[-1:]
+        downfloaters = []
+
         for group_score in sorted_brackets_keys:
             group = self.brackets[group_score]
+            if len(downfloaters) > 0:
+                # TODO: B.5, B.6
+                group[0:0] = downfloaters
+                
+                
+            downfloaters = []
             for player in group:
+                if player.has_key('pair') and player['pair']:
+                    continue
+                
                 opponents = self.find_possible_opponents(player, group)
-            
+                
                 # C.1: B.1, B.2
-                downfloaters = []
                 if len(opponents) == 0:
+                    player['downfloater'] = True
                     downfloaters.append(player)
                 elif len(opponents) == 1:
+                    if player.has_key('downfloater') and player['downfloater']:
+                        opponents[0]['upfloater'] = True
                     playerW, playerB = self.return_with_color_preferences(player, opponents[0])
                     self.pairs.append([playerW, playerB])
-                    group.remove(player)
-                    group.remove(opponents[0])
+                    playerW['pair'] = True
+                    playerB['pair'] = True
+                elif len(opponents) > 1 and player.has_key('downfloater') and player['downfloater']:
+                    sorted_players = self.order_players(opponents)
+                    sorted_players[0]['upfloater'] = True
+                    playerW, playerB = self.return_with_color_preferences(player, sorted_players[0])
+                    self.pairs.append([playerW, playerB])
+                    playerW['pair'] = True
+                    playerB['pair'] = True
+                    pass
                     
-            if len(group) > 0:
-                self.pair_group_with_transposition(group)
+            without_opponents = [pl for pl in group if not pl.has_key('pair') or pl['pair'] is False]
+            if len(without_opponents) > 2:
+                self.pair_group_with_transposition(without_opponents)
+                without_opponents = [pl for pl in group if not pl.has_key('pair') or pl['pair'] is False]
+                if len(without_opponents) == 1:
+                    without_opponents[0]['downfloater'] = True
+                    downfloaters.append(without_opponents[0])
             
-            if len(downfloaters) > 0:
+            if len(downfloaters) > 0 and highest_group == group_score:
                 pass
         pass
     
@@ -144,8 +175,8 @@ class Pairing:
             for index in range(S1count):
                 playerW, playerB = self.return_with_color_preferences(S1[index], S2[index])
                 self.pairs.append([playerW, playerB])
-                group.remove(playerW)
-                group.remove(playerB)
+                playerW['pair'] = True
+                playerB['pair'] = True
                 
             return group
                 
@@ -183,6 +214,7 @@ class Pairing:
         info = self.player_info[current_player['name']]
         rest = [player for player in group if current_player != player]
         rest = [player for player in rest if player not in info['opponents']]   # B.1
+        rest = [player for player in rest if not player.has_key('pair') or player['pair'] is False]
         if len(rest) == 0:
             return []
         

@@ -49,6 +49,9 @@ Admin user: admin/admin
 #### TODO:
 * Use Buchholz system
 * Initial rating calculator
+* Rest Swiss system rules:
+* * For odd players/byes/walkover
+* * Remember floats in past rounds (B.5, B.6)
 
 ##### Admin:
 * Player: Disable delete players if ones are assigned to tournament
@@ -57,6 +60,7 @@ Admin user: admin/admin
 * Tour: Validation tournament dates
 * Round: Validation round date
 * Round: Disable delete if round have one finished game
+* Round: Disable edit tournament
 * Round: Disable add if players less than 2
 * Round: Restore filter for tables after leaving add/edit actions
 * Game: Refresh Players/Opponents by AJAX

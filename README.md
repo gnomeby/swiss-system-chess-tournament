@@ -52,6 +52,7 @@ Admin user: admin/admin
 * Rest Swiss system rules:
 * * For odd players/byes/walkover
 * * Remember floats in past rounds (B.5, B.6)
+* * Backtracking
 
 ##### Admin:
 * Player: Disable delete players if ones are assigned to tournament

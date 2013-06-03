@@ -90,7 +90,7 @@ class Pairing:
     def pair_even_round(self):
         sorted_brackets_keys = sorted(self.brackets, reverse=True)
         highest_group = sorted_brackets_keys[0]
-        #lowest_group = sorted_brackets_keys[-1:]
+        lowest_group = sorted_brackets_keys[-1:]
         downfloaters = []
 
         for group_score in sorted_brackets_keys:
@@ -135,7 +135,7 @@ class Pairing:
                     without_opponents[0]['downfloater'] = True
                     downfloaters.append(without_opponents[0])
             
-            if len(downfloaters) > 0 and highest_group == group_score:
+            if len(downfloaters) > 0 and lowest_group == group_score:
                 pass
         pass
     
@@ -182,7 +182,8 @@ class Pairing:
                 
         return group
     
-    def return_with_color_preferences(self, player1, player2):
+    def return_with_color_preferences(self, playerA, playerB):
+        player1, player2 = self.order_players([playerA, playerB])
         player1_pref = self.get_color_preferences(player1)
         player2_pref = self.get_color_preferences(player2)
         player1_switched_color = self.get_switched_color_for_latest_game(player1)
@@ -210,7 +211,7 @@ class Pairing:
         return None
 
     # B.1, B.2    
-    def find_possible_opponents(self, current_player, group):
+    def find_possible_opponents(self, current_player, group, skip_color_pref = False):
         info = self.player_info[current_player['name']]
         rest = [player for player in group if current_player != player]
         rest = [player for player in rest if player not in info['opponents']]   # B.1
@@ -221,7 +222,7 @@ class Pairing:
         # B.2
         # TODO: Top scored players
         color_pref = self.get_color_preferences(current_player)
-        if abs(color_pref) >= 2:
+        if abs(color_pref) >= 2 and skip_color_pref is False:
             for player in rest:
                 opponent_color_pref = self.get_color_preferences(player)
                 if opponent_color_pref == color_pref:

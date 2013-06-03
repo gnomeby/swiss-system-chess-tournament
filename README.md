@@ -12,9 +12,17 @@ The system is for helping judges to provide chess tournaments based on swiss sys
 * [Swiss System Based on Rating (The Dutch System)](http://www.fide.com/fide/handbook.html?id=83&view=article)
 * * Pairing ordering: Score->Rating->Title (GM-IM-WGM-FM-WIM-CM-WFM-WCM-no title)->Alphabetically (name first)
 * [FIDE Title Regulations effective from 1 July 2013](http://www.fide.com/component/handbook/?id=163&view=article)
+* [FIDE Rating Regulations effective from 1 July 2013](http://www.fide.com/fide/handbook.html?id=161&view=article)
+* [FIDE Rating calculator](http://ratings.fide.com/calculator_rtd.phtml)
+
+#### Example
+UI: [ss-chess-tour.niakhaichyk.org](http://railsexample.niakhaichyk.org/)
+Admin UI: [ss-chess-tour.niakhaichyk.org/admin](http://railsexample.niakhaichyk.org/admin/)
+Admin user: admin/admin
 
 #### Features:
 * Setup players
+* * ELO rating recalculation
 * Setup tournaments
 * * Sort Players alphabetically in Inline model
 * * Direct link to creating rounds in list of tournaments
@@ -36,14 +44,18 @@ The system is for helping judges to provide chess tournaments based on swiss sys
 
 #### TODO:
 * Use Buchholz system
-* Validation tournament dates, players
-* Validation round date
+* Initial rating calculator
+
 * Optimize queries
-* Validation game players
-* Show only tournament players in game selects
-* Filter by AJAX right side
-* allow to not have apponent
-* Disable add round if players less than 2
+* Final results
+
+* Validation tournament dates
+* Validation round date
+
+* Validation game players (only assigned to tournament), Show only tournament players in game selects
+* Filter Opponents by AJAX right side
+* Game: Allow to not have apponent
+* Round: Disable add round if players less than 2
 ##### Admin:
 * Restore filter for tables after leaving add/edit actions
 * Player: disable delete players if ones are assigned to tournament

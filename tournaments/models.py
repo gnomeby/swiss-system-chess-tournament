@@ -19,12 +19,20 @@ class Player(models.Model):
         ('1 WCM', 'Woman Candidate Master'),
         ('0 nt', 'no title'),
     )
-        
+    DEVELOPMENT_COEFFICIENT = (
+        (None, 'Auto'),
+        (30, '30'),
+        (15, '15'),
+        (10, '10'),
+    )
+            
     name = models.CharField(max_length=200)
     country = CountryField()
     register_date = models.DateField('registration date', auto_now_add=True)
     initial_rating = models.IntegerField()
     rating = models.IntegerField()
+    rating_dev_coef = models.IntegerField(choices=DEVELOPMENT_COEFFICIENT, default=None, null=True)
+    last_rating_calculation = models.DateField(null=True, default=None)
     fide_id = models.BigIntegerField('FIDE ID')
     fide_title = models.CharField(max_length=10, choices=FIDE_TITLES, default='0 nt')
     

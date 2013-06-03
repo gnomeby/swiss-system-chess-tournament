@@ -130,7 +130,6 @@ class GameInline(admin.TabularInline):
                               for game in games
                               ]
                 pairing = Pairing(players_list, games_list, tournament.round_set.count() + 1)
-                print games_list
                 pairs = pairing.make_it()
                 print pairs
                 for pair in pairs:

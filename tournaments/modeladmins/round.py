@@ -10,7 +10,7 @@ from tournaments.pairing import Pairing
 class GameInLineFormAdmin(forms.ModelForm):
     player = forms.ModelChoiceField(queryset=Player.objects.order_by('name'))
     player.label = 'Player'
-    opponent = forms.ModelChoiceField(queryset=Player.objects.order_by('name'))
+    opponent = forms.ModelChoiceField(queryset=Player.objects.order_by('name'), required=False)
     opponent.label = 'Opponent'
     
     def clean(self):

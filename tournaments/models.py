@@ -102,7 +102,7 @@ class Game(models.Model):
     opponent_color = models.CharField(max_length=1,
                                       choices=PLAYER_COLOR,
                                       default='B')
-    opponent = models.ForeignKey(Player, related_name="player_b", null=True)
+    opponent = models.ForeignKey(Player, related_name="player_b", null=True, blank=True)
     status = models.CharField(max_length=10,
                               choices=GAME_STATUSES,
                               default='planned')

@@ -41,7 +41,7 @@ Admin user: admin/admin
 ##### User UI:
 * View tournament information
 * View round information
-* View initial standing information
+* View standing information
 
 #### Problems:
 * How to store players for game? One record or two record?
@@ -51,7 +51,6 @@ Admin user: admin/admin
 * Initial rating calculator
 
 ##### Admin:
-* Restore filter for tables after leaving add/edit actions
 * Player: disable delete players if ones are assigned to tournament
 * Tour: disable edit/delete players if tournament has any round
 * Tour: disable delete tournament if one has any round
@@ -59,14 +58,14 @@ Admin user: admin/admin
 * Round: Validation round date
 * Round: disable delete if round have one finished game
 * Round: Disable add round if players less than 2
+* Round: Restore filter for tables after leaving add/edit actions
 * Game: Filter Opponents by AJAX right side
-* Game: Allow to not have apponent
 * Game: Validation game players (only assigned to tournament), Show only tournament players in game selects
 
 ##### User UI:
 * Cache pages
 * Rounds: Order games by white player names
-* Minor: Link to player fide page
+* Minor: Link to player FIDE page
 
 #### Most difficult places:
 * Autopairing by rating during round creating

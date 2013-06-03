@@ -5,6 +5,8 @@ The system is for helping judges to provide chess tournaments based on swiss sys
 
 #### Requirements:
 * Python 2.7
+* * MySQL support
+* * memcached support
 * Django 1.5.1
 * South 0.8
 
@@ -16,8 +18,10 @@ The system is for helping judges to provide chess tournaments based on swiss sys
 * [FIDE Rating calculator](http://ratings.fide.com/calculator_rtd.phtml)
 
 #### Example
-UI: [ss-chess-tour.niakhaichyk.org](http://railsexample.niakhaichyk.org/)
-Admin UI: [ss-chess-tour.niakhaichyk.org/admin](http://railsexample.niakhaichyk.org/admin/)
+UI: [ss-chess-tour.niakhaichyk.org](http://ss-chess-tour.niakhaichyk.org/)
+
+Admin UI: [ss-chess-tour.niakhaichyk.org/admin](http://ss-chess-tour.niakhaichyk.org/admin/)
+
 Admin user: admin/admin
 
 #### Features:
@@ -46,9 +50,6 @@ Admin user: admin/admin
 * Use Buchholz system
 * Initial rating calculator
 
-* Optimize queries
-* Final results
-
 ##### Admin:
 * Restore filter for tables after leaving add/edit actions
 * Player: disable delete players if ones are assigned to tournament
@@ -61,6 +62,7 @@ Admin user: admin/admin
 * Game: Filter Opponents by AJAX right side
 * Game: Allow to not have apponent
 * Game: Validation game players (only assigned to tournament), Show only tournament players in game selects
+
 ##### User UI:
 * Cache pages
 * Rounds: Order games by white player names

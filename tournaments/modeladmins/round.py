@@ -13,6 +13,18 @@ class GameInLineFormAdmin(forms.ModelForm):
     opponent = forms.ModelChoiceField(queryset=Player.objects.order_by('name'), required=False)
     opponent.label = 'Opponent'
     
+    def __init__(self, *args, **kwargs):
+        super(GameInLineFormAdmin, self).__init__(*args, **kwargs)
+        
+        initial = kwargs.get('initial', None)
+        game = kwargs.get('instance', None)
+        if game:
+            self.fields['player'].queryset = game.round.tournament.players.order_by('name')
+            self.fields['opponent'].queryset = game.round.tournament.players.order_by('name')
+        elif initial and initial.has_key('tournament'):
+            self.fields['player'].queryset = initial['tournament'].players.order_by('name')
+            self.fields['opponent'].queryset = initial['tournament'].players.order_by('name')
+    
     def clean(self):
         cleaned_data = super(GameInLineFormAdmin, self).clean()
         tour = Tournament.objects.get(pk=self.data['tournament'])
@@ -22,6 +34,14 @@ class GameInLineFormAdmin(forms.ModelForm):
         opponent = cleaned_data.get("opponent") if cleaned_data.has_key("opponent") else None
         if player == opponent:
             self._errors["opponent"] = self.error_class([u'Player cannot play with oneself'])
+            del cleaned_data["opponent"]
+
+        if tour.players.filter(id=player.id).count() == 0:
+            self._errors["player"] = self.error_class([u'%s is not in this tournament.' % player])
+            del cleaned_data["player"]
+            
+        if opponent is not None and tour.players.filter(id=opponent.id).count() == 0:
+            self._errors["opponent"] = self.error_class([u'%s is not in this tournament.' % opponent])
             del cleaned_data["opponent"]
             
         if tour.players.count() % 2 == 0 and opponent is None:
@@ -91,21 +111,17 @@ class GameInline(admin.TabularInline):
         
         initial = []
         
-        def pair_players_into_initial(players):
-            half = int(math.ceil(float(len(players)) / 2.0))
-            i = 0
-            for player in players[:half]:
-                opponent = players[half + i] if half + i < len(players) else None 
-                initial.append({'player': player, 'opponent': opponent})
-                i+=1
-            pass
-        
         if request.method == "GET" and obj is None and request.GET.has_key('tournament'):
             tournament = Tournament.objects.get(pk=request.GET['tournament'])
             
             if tournament.round_set.count() == 0:
                 players = tournament.players.order_by('-rating', '-fide_title', 'name')
-                pair_players_into_initial(players)
+                half = int(math.ceil(float(len(players)) / 2.0))
+                for i in range(half):
+                    initial.append({'player': players[i],
+                                    'opponent': players[half + i] if half + i < len(players) else None,
+                                    'tournament': tournament})
+                pass
             else:
                 players = tournament.players.order_by('-rating', '-fide_title', 'name')
                 players_list = [{ 
@@ -130,9 +146,10 @@ class GameInline(admin.TabularInline):
                               ]
                 pairing = Pairing(players_list, games_list, tournament.round_set.count() + 1)
                 pairs = pairing.make_it()
-                print pairs
                 for pair in pairs:
-                    initial.append({'player': pair[0]['player'], 'opponent': pair[1]['player']})
+                    initial.append({'player': pair[0]['player'],
+                                    'opponent': pair[1]['player'],
+                                    'tournament': tournament})
 
             
             formset.extra = len(initial)

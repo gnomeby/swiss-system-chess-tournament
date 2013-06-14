@@ -3,6 +3,8 @@ swiss-system-chess-tournament
 
 The system is for helping judges to provide chess tournaments based on swiss system.
 
+![gnomeby avatar](http://niakhaichyk.org/andrey/img/lisa_small_32.png)
+
 #### Requirements:
 * Python 2.7
 * * MySQL support

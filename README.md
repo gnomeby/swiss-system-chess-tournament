@@ -6,7 +6,6 @@ The system is for helping judges to provide chess tournaments based on swiss sys
 #### Requirements:
 * Python 2.7
 * * MySQL support
-* * memcached support
 * Django 1.5.1
 * South 0.8
 

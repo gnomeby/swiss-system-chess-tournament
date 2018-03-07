@@ -3,8 +3,6 @@ swiss-system-chess-tournament
 
 The system is for helping judges to provide chess tournaments based on swiss system.
 
-![gnomeby avatar](http://niakhaichyk.org/andrey/img/lisa_small_32.png)
-
 #### Requirements:
 * Python 2.7
 * * MySQL support
@@ -17,11 +15,6 @@ The system is for helping judges to provide chess tournaments based on swiss sys
 * [FIDE Title Regulations effective from 1 July 2013](http://www.fide.com/component/handbook/?id=163&view=article)
 * [FIDE Rating Regulations effective from 1 July 2013](http://www.fide.com/fide/handbook.html?id=161&view=article)
 * [FIDE Rating calculator](http://ratings.fide.com/calculator_rtd.phtml)
-
-#### Example
-UI: [ss-chess-tour.niakhaichyk.org](http://ss-chess-tour.niakhaichyk.org/)  
-Admin UI: [ss-chess-tour.niakhaichyk.org/admin](http://ss-chess-tour.niakhaichyk.org/admin/)  
-Admin user: admin/admin
 
 #### Features:
 * Setup players
